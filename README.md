@@ -49,7 +49,7 @@ No manual searching, no repetitive clicking, and no missed opportunities.
 2. **Install required packages** — Open a terminal and run:
 
 ```bash
-pip install undetected-chromedriver pyautogui setuptools openai flask-cors flask flask-sqlalchemy flask-login
+pip install -r requirements.txt
 ```
 
 3. **Install Google Chrome** — Download from [google.com/chrome](https://www.google.com/chrome) and install in its default location.
@@ -130,6 +130,7 @@ auto_job_applier_linkedin/
 │
 ├── app.py              # Flask web application (job history UI + user auth)
 ├── models.py           # SQLAlchemy database models
+├── requirements.txt    # All required Python packages
 ├── runAiBot.py         # Main entry point to start the bot
 ├── create_test_user.py # Helper to create a test user for the web UI
 └── test_login.py       # Login testing script
@@ -158,3 +159,9 @@ See [AGPLv3 LICENSE](./LICENSE) for full details.
 - **LinkedIn:** [chittatosha-mohanta](https://www.linkedin.com/in/chittatosha-mohanta-32a182288/)
 - **GitHub:** [chittatosha-mohanta](https://github.com/chittatosha-mohanta)
 - **Email:** [chittatoshamohanta@gmail.com](mailto:chittatoshamohanta@gmail.com)
+
+---
+
+## 🙏 Credits
+
+This project builds upon the open-source work of **[GodsScion/Auto_job_applier_linkedIn](https://github.com/GodsScion/Auto_job_applier_linkedIn)** by Sai Vignesh Golla, licensed under AGPL-3.0. Extended with user authentication, database support, and UI improvements by Chittatosha Mohanta.
