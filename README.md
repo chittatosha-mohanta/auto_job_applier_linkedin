@@ -127,13 +127,13 @@ auto_job_applier_linkedin/
 ├── templates/          # HTML templates for the Flask web UI
 ├── static/             # CSS and JS for the web UI
 ├── instance/           # SQLite database (auto-generated, not committed)
-│
+├── tests/              # Test and helper scripts
+│   ├── create_test_user.py
+│   └── test_login.py
 ├── app.py              # Flask web application (job history UI + user auth)
 ├── models.py           # SQLAlchemy database models
 ├── requirements.txt    # All required Python packages
 ├── runAiBot.py         # Main entry point to start the bot
-├── create_test_user.py # Helper to create a test user for the web UI
-└── test_login.py       # Login testing script
 ```
 
 ---
