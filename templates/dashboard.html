@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1>Dashboard</h1>
+    <div>
+        <span style="color: var(--text-secondary); margin-right: 1rem;">Logged in as: <strong>{{ user.username
+                }}</strong></span>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+    <!-- CV Upload Card -->
+    <div class="glass-panel dashboard-card">
+        <h3 class="card-title">Manage CV</h3>
+
+        {% if user.cv_path %}
+        <div class="alert alert-success" style="margin-bottom: 1rem;">
+            ✓ CV uploaded successfully. The bot will use this CV for applications.
+        </div>
+        {% else %}
+        <div class="alert alert-info" style="margin-bottom: 1rem;">
+            ℹ No CV uploaded yet. Please upload your default resume (PDF only).
+        </div>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('upload_cv') }}" enctype="multipart/form-data"
+            style="margin-top: 1.5rem;">
+            <div class="form-group">
+                <input type="file" name="cv" accept=".pdf" class="form-control" style="padding: 0.5rem;">
+            </div>
+            <button type="submit" class="btn" style="margin-top: 1rem; width: 100%;">Upload New CV</button>
+        </form>
+    </div>
+
+    <!-- Bot Control Card -->
+    <div class="glass-panel dashboard-card">
+        <h3 class="card-title">Bot Status</h3>
+
+        {% if user.is_active_bot_user %}
+        <div class="alert alert-success">
+            <strong>You are the Active User.</strong> The desktop bot will use your profile and CV when it runs next.
+        </div>
+        <form method="POST" action="{{ url_for('start_bot') }}" style="margin-top: 1rem;">
+            <button type="submit" class="btn btn-primary" style="width: 100%; background-color: var(--success);">Start
+                Automating Applications</button>
+        </form>
+        {% else %}
+        <div class="alert alert-danger">
+            <strong>You are NOT the Active User.</strong> Any desktop bot applications will not be saved to your profile
+            or use your CV.
+        </div>
+        <form method="POST" action="{{ url_for('set_active_bot') }}">
+            <button type="submit" class="btn btn-secondary" style="margin-top: 1rem; width: 100%;">Make Me the Active
+                User</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Application Tracking Table -->
+<div class="glass-panel dashboard-card" style="margin-top: 2rem;">
+    <h3 class="card-title">Applied Jobs History</h3>
+
+    <div class="table-responsive">
+        <table id="jobsTable">
+            <thead>
+                <tr>
+                    <th>Job Title</th>
+                    <th>Company</th>
+                    <th>HR Contact</th>
+                    <th>External Link</th>
+                    <th>Date Applied</th>
+                </tr>
+            </thead>
+            <tbody id="jobsBody">
+                <!-- Populated via JS -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch('{{ url_for("get_applied_jobs") }}')
+            .then(response => response.json())
+            .then(jobs => {
+                const tbody = document.getElementById('jobsBody');
+                if (jobs.error) {
+                    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">${jobs.error}</td></tr>`;
+                    return;
+                }
+                if (jobs.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--text-secondary);">No applications found. Run the bot to apply for jobs!</td></tr>';
+                    return;
+                }
+
+                jobs.forEach(job => {
+                    const tr = document.createElement('tr');
+
+                    // Title
+                    const tdTitle = document.createElement('td');
+                    if (job.Job_Link && job.Job_Link !== 'N/A') {
+                        tdTitle.innerHTML = `<a href="${job.Job_Link}" target="_blank" class="table-link">${job.Title}</a>`;
+                    } else {
+                        tdTitle.textContent = job.Title;
+                    }
+                    tr.appendChild(tdTitle);
+
+                    // Company
+                    const tdCompany = document.createElement('td');
+                    tdCompany.textContent = job.Company;
+                    tr.appendChild(tdCompany);
+
+                    // HR
+                    const tdHR = document.createElement('td');
+                    if (job.HR_Name && job.HR_Name !== 'Unknown' && job.HR_Link) {
+                        tdHR.innerHTML = `<a href="${job.HR_Link}" target="_blank" class="table-link">${job.HR_Name}</a>`;
+                    } else {
+                        tdHR.textContent = job.HR_Name || 'N/A';
+                    }
+                    tr.appendChild(tdHR);
+
+                    // External Link
+                    const tdExt = document.createElement('td');
+                    if (job.External_Job_link && job.External_Job_link !== 'N/A') {
+                        if (job.External_Job_link === 'Easy Applied') {
+                            tdExt.innerHTML = '<span class="status-badge">Easy Applied</span>';
+                        } else {
+                            tdExt.innerHTML = `<a href="${job.External_Job_link}" target="_blank" class="table-link">External Link</a>`;
+                        }
+                    } else {
+                        tdExt.textContent = 'N/A';
+                    }
+                    tr.appendChild(tdExt);
+
+                    // Date
+                    const tdDate = document.createElement('td');
+                    tdDate.textContent = job.Date_Applied;
+                    tr.appendChild(tdDate);
+
+                    tbody.appendChild(tr);
+                });
+            })
+            .catch(error => console.error('Error fetching jobs:', error));
+    });
+</script>
+{% endblock %}

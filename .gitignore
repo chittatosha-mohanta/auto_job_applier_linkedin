@@ -1,0 +1,10 @@
+# macOS
+.DS_Store
+
+# Database
+instance/
+*.db
+*.sqlite3
+
+# Secrets - never commit real credentials
+config/secrets.py

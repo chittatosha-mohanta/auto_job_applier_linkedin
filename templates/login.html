@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="glass-panel auth-form-container">
+    <h2>Welcome Back</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 2rem;">Log in to access your dashboard</p>
+
+    <div class="auth-form">
+        <form method="POST" action="">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="form-control" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn">Log In</button>
+        </form>
+    </div>
+
+    <div style="margin-top: 2rem;">
+        <small class="text-secondary">
+            Access restricted to authorized personnel.
+        </small>
+    </div>
+</div>
+{% endblock %}
