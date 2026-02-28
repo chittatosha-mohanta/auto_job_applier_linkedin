@@ -159,9 +159,3 @@ See [AGPLv3 LICENSE](./LICENSE) for full details.
 - **LinkedIn:** [chittatosha-mohanta](https://www.linkedin.com/in/chittatosha-mohanta-32a182288/)
 - **GitHub:** [chittatosha-mohanta](https://github.com/chittatosha-mohanta)
 - **Email:** [chittatoshamohanta@gmail.com](mailto:chittatoshamohanta@gmail.com)
-
----
-
-## 🙏 Credits
-
-This project builds upon the open-source work of **[GodsScion/Auto_job_applier_linkedIn](https://github.com/GodsScion/Auto_job_applier_linkedIn)** by Sai Vignesh Golla, licensed under AGPL-3.0. Extended with user authentication, database support, and UI improvements by Chittatosha Mohanta.
